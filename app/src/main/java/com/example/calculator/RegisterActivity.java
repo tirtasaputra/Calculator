@@ -36,7 +36,14 @@ public class RegisterActivity extends AppCompatActivity {
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                AppDatabase.getInstance(getApplicationContext()).userDao().insertUser(new User(fullName, nickName, userName, password));
+
+                AppExecutors.getInstance().diskIO().execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        AppDatabase.getInstance(getApplicationContext()).userDao().insertUser(new User(fullName, nickName, userName, password));
+                    }
+                });
+
                 Intent registerIntent = new Intent(RegisterActivity.this, LoginActivity.class);
                 startActivity(registerIntent);
                 finish();
